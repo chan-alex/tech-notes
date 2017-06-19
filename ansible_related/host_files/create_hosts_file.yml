@@ -1,0 +1,29 @@
+---
+
+# The purpose of this first task is to collect ansible facts for all the hosts.
+# This is because the host.js template need facts from all hosts.
+- name: Gathering ansible facts for all servers
+  hosts: 
+    - all
+  become: true
+  become_method: sudo
+  tasks: [ ]
+
+
+- name: Create hosts file
+  hosts: 
+    - all
+  become: true
+  become_method: sudo
+  gather_facts: false
+  
+  tasks:
+
+    - name: Generate hosts files
+      template:
+        src: "{{ playbook_dir }}/hosts.js"
+        dest: /etc/hosts
+        owner: root
+        group: root
+        mode: 0644
+

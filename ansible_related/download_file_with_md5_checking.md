@@ -9,18 +9,18 @@ Below is one example.
     warn: false
 
 
-# Read in the md5 file
+#### Read in the md5 file
 - slurp:
     src: /tmp/download.md5
   register: slurpfile
 
 
-# Set a fact
+#### Set a fact
 - set_fact:
     md5_value: "{{ slurpfile['content'] | b64decode }}"
 
 
-# Use the get_url to download the file while checking the md5 value
+#### Use the get_url to download the file while checking the md5 value
 - name: Download the file
   get_url:
     url: "{{ download_url }}"

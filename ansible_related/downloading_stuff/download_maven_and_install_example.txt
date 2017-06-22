@@ -1,0 +1,72 @@
+
+# Using wget instead of get_url because centos 6 using python 2.6.6 which can cause
+# problem for some websites using https. See https://github.com/ansible/ansible/issues/12161
+- name: Download maven md5 file
+  command: "/usr/bin/wget {{ maven_md5 }} -O /tmp/maven.md5"
+  args:
+    warn: false
+
+
+# Read in the md5 file
+- slurp:
+    src: /tmp/maven.md5
+  register: slurpfile
+
+
+- set_fact:
+    md5_value: "{{ slurpfile['content'] | b64decode }}"
+
+
+- name: Download the maven tar.gz file
+  get_url:
+    url: "{{ maven_download_url }}"
+    dest: /tmp/maven.tar.gz
+    checksum: "md5:{{ md5_value }}"
+    force: true
+
+
+- name: Deleting any previous untar dir 
+  file:
+    name: "{{ extract_dest }}"
+    state: absent
+
+
+- name: Creating untar dir
+  file:
+    name: "{{ extract_dest }}"
+    state: directory
+
+
+- name: extract tar file
+  command: /bin/tar zxf /tmp/maven.tar.gz -C {{ extract_dest }}
+  args:
+    warn: false
+
+
+- name: Get name of extracted dir
+  shell: /bin/basename `ls {{ extract_dest }}`
+  register: basename_output
+
+
+- set_fact:
+    apache_maven_dir: "{{ basename_output.stdout }}"
+
+
+- name: Move maven dir to /opt
+  command: "/bin/mv {{ extract_dest }}/{{ apache_maven_dir }} /opt"
+
+
+- name: Create symlink
+  command: "/bin/ln -s /opt/{{ apache_maven_dir }}/bin/mvn  /usr/local/bin/"
+  args:
+    warn: false
+
+
+- name: Clean up 
+  file:
+    name: "{{ item }}"
+    state: absent
+  with_items:
+    - "{{ extract_dest }}"
+    - /tmp/maven.tar.gz
+    - /tmp/maven.md5

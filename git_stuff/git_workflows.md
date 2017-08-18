@@ -10,6 +10,8 @@ https://barro.github.io/2016/02/a-succesful-git-branching-model-considered-harmf
 
 Oneflow:
 http://endoflineblog.com/oneflow-a-git-branching-model-and-workflow
+- http://gitgraphjs.com/ is awessome
+
 
 Trunk Based Development:
 https://trunkbaseddevelopment.com/

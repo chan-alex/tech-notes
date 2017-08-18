@@ -7,3 +7,9 @@ http://blog.mojotech.com/mojotech-git-workflow/
 https://barro.github.io/2016/02/a-succesful-git-branching-model-considered-harmful/
 - this blog entry is about gitflow but also offers a "catus" model
 
+
+Oneflow:
+http://endoflineblog.com/oneflow-a-git-branching-model-and-workflow
+
+Trunk Based Development:
+https://trunkbaseddevelopment.com/

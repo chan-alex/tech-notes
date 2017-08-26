@@ -1,1 +1,4 @@
 Engineers are also people who fix problems you didn't know you had in ways you don't understand.
+
+software engineers fix problems even they didn't know they had in ways they don't understand.
+
